@@ -27,6 +27,25 @@ def moving_filter(data, window_size):
 
     return moving_averages
 
+# Returns the ratio between peak amplitude and noise of the extra-cellular signal
+def AmplitudeToNoiseRatio(recordings):
+    amp = np.max(recordings, axis=1)
+    dev = np.std(recordings, axis=1)
+    
+    return np.where(dev==0, 0, amp/dev)
+
+# Returns a measure of the asymmetry of the extra-cellular signal's probability distribution
+def Skewness(recordings):
+    return scipy.stats.skew(recordings, axis=1)
+
+# Returns a measure of the peakedness or flatness of the extra-cellular signal's probability distribution.
+def Kurtosis(recordings):
+    return scipy.stats.kurtosis(recordings, axis=1)
+
+# Returns the total energy contained in the extra-cellular signal
+def Energy(recordings):
+    return np.sum(recordings**2, axis=1)
+
 # Returns positive peak of extra-cellular signal
 def PositiveAmplitude(recordings):
     return np.max(recordings, axis=1)
