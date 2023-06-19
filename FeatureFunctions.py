@@ -1,17 +1,5 @@
-# Function to compute gradient of an array
-def Gradient(arr):
-    grad = []
-    delta = 20
-    for i in range(len(arr)):
-        if(i+delta < len(arr)):
-            grad.append(5000*(arr[i+delta]-arr[i])/delta)
-        else:
-            grad.append(5000*(arr[i]-arr[i-delta])/delta)
-            
-    return np.array(grad)
-
-# Takes in a 1 dimensional numpy array and a window size, and applies a moving
-# average filter to the data.
+# Takes in a 1-dimensional array and a window size, and applies a moving
+# average filter to data.
 def moving_filter(data, window_size):
     i = 0
     moving_averages = []
