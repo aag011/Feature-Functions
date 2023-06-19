@@ -85,3 +85,31 @@ def SlopeAfterDecay(recordings):
         slopes.append(np.min(dv))
             
     return np.array(slopes)
+
+# Returns area under the curve for intra-cellular recordings
+def AUC(recordings):
+    auc = []
+    
+    for rec in recordings:
+        auc.append(sklearn.metrics.auc([i for i in range(len(rec))], rec))
+        
+    return np.array(auc)
+
+# Returns correlations between recordings and their delayed versions. Can be used for intra-cellular recordings
+def AutoCorrelation(recordings):
+    result = []
+    
+    for rec in recordings:
+        result.append(np.correlate(rec, rec, mode='full'))
+        
+    return np.array(result)
+
+# Returns slope before first peak of an intra-cellular signal
+def SlopeBeforePeak(recordings):
+    slopes = []
+    
+    for rec in recordings:
+        dv = moving_filter(np.gradient(moving_filter(rec, 20)), 20)
+        slopes.append(np.max(dv))
+            
+    return np.array(slopes)
