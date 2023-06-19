@@ -69,7 +69,7 @@ def DecayRate(recordings):
     
     for rec in recordings:
         max_index = np.argmax(rec)
-        dv = Gradient(moving_filter(rec, 20))
+        dv = moving_filter(np.gradient(moving_filter(rec, 20)), 20)
         min_index = np.argmin(dv)
         half_index = int((max_index + min_index)/2)
         rates.append(dv[half_index])
@@ -81,7 +81,7 @@ def SlopeAfterDecay(recordings):
     slopes = []
     
     for rec in recordings:
-        dv = Gradient(moving_filter(rec, 20))
+        dv = moving_filter(np.gradient(moving_filter(rec, 20)), 20)
         slopes.append(np.min(dv))
             
     return np.array(slopes)
