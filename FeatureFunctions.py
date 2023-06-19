@@ -10,14 +10,6 @@ def Gradient(arr):
             
     return np.array(grad)
 
-# Returns positive peak of extra-cellular signal
-def PositiveAmplitude(recordings):
-    return np.max(recordings, axis=1)
-
-# Returns negative peak of extra-cellular signal
-def NegativeAmplitude(recordings):
-    return np.min(recordings, axis=1)
-
 # Takes in a 1 dimensional numpy array and a window size, and applies a moving
 # average filter to the data.
 def moving_filter(data, window_size):
@@ -34,6 +26,14 @@ def moving_filter(data, window_size):
         moving_averages.append(data[len(data) - (window_size - i)])
 
     return moving_averages
+
+# Returns positive peak of extra-cellular signal
+def PositiveAmplitude(recordings):
+    return np.max(recordings, axis=1)
+
+# Returns negative peak of extra-cellular signal
+def NegativeAmplitude(recordings):
+    return np.min(recordings, axis=1)
 
 # Returns ratio of negative and positive amplitude in extra-cellular signal
 def MinMaxRatio(recordings):
