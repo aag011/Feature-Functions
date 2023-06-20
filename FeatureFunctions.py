@@ -22,6 +22,16 @@ def AmplitudeToNoiseRatio(recordings):
     
     return np.where(dev==0, 0, amp/dev)
 
+# Returns position of local minima in 2nd half of an extra-cellular signal
+# This position is correlated with the steeper decay region of the  corresponding intra-cellular signal
+def LocalMinimaEAP(recordings):
+    result = []
+    
+    for rec in recordings:
+        result.append(np.argmax(rec)+200+np.argmin(rec[np.argmax(rec)+200:]))
+        
+    return np.array(result)
+
 # Returns a measure of the asymmetry of the extra-cellular signal's probability distribution
 def Skewness(recordings):
     return scipy.stats.skew(recordings, axis=1)
