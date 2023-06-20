@@ -11,7 +11,8 @@ def moving_filter(data, window_size):
         i += 1
 
     for i in range(window_size - 1):
-        moving_averages.append(data[len(data) - (window_size - i)])
+        ind = len(data) - (window_size - i)
+        moving_averages.append(np.mean(data[ind-window_size:ind]))
 
     return moving_averages
 
@@ -111,3 +112,31 @@ def SlopeBeforePeak(recordings):
         slopes.append(np.max(dv))
             
     return np.array(slopes)
+
+# Returns 4 points (timestep locations) for every intra-cellular recording
+# These 4 points roughly divide the intra-cellular signal into regions that are approximately linear
+def ChangePoints(recordings):
+    points = []
+    
+    for rec in recordings:
+        pt = []
+        grad = moving_filter(np.gradient(moving_filter(rec, 30)), 30)
+        x2 = np.argmax(grad)
+        x1 = int(x2/2)
+        x = [i for i in range(x1, x2) if grad[i] > (grad[x1]+grad[x2])/2][0]
+        pt.append(x)
+        pt.append(np.argmax(rec))
+        
+        x2 = np.argmin(grad)
+        x1 = int((np.argmax(rec) + x2)/2)
+        x = [i for i in range(x1, x2) if grad[i] < (grad[x1]+grad[x2])/2][0]
+        pt.append(x)
+        
+        x1 = np.argmin(grad)
+        x2 = int((x1+len(rec)-1)/2)
+        x = [i for i in range(x1, x2) if grad[i] > (grad[x1]+grad[x2])/2][0]
+        pt.append(x)
+        
+        points.append(pt)
+        
+    return np.array(points)
